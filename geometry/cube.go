@@ -1,7 +1,11 @@
 package geometry
 
-func CubeVolume(n int) int {
+func CubeVolume(n int) (int, error) {
+	if n != 0 {
+		return n * n * n, nil
 
-	return n * n * n
+	} else {
+		return 0, errors.New("Zero edges not allowed")
+	}
 
 }
