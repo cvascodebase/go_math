@@ -1,0 +1,37 @@
+import xml.etree.ElementTree as ET
+import os
+
+def updateConfig(filepath):
+    isUpdated=False;
+    tree = ET.parse(filepath)
+    root = tree.getroot()
+    #print("root ",root)
+    #print("Hello",root.findall(".//properties"))
+    for e in root.findall(".//properties"):
+        #print(e.findall(".//authorizationStrategy"))
+        for e1 in e.findall(".//authorizationStrategy"):
+            for e2 in e1.findall(".//permission"):
+                #print(e2.text)
+                if e2.text.find("Build") > 0:
+                    #print("Before Remove : ",e2.text)
+                    e1.remove(e2)
+                    isUpdated=True
+    tree.write(filepath)
+    return isUpdated
+
+
+
+for root, directories, filenames in os.walk('/home/ramu/Python/jobs'):
+    for directory in directories:
+        #print os.path.join(root, directory)
+        pass
+    for filename in filenames:
+        if filename!="config.xml":
+            print "ignoring a file as its not config.xml",filename,"\n"
+            continue
+        filepath=os.path.join(root,filename)
+        if "JARA" in filepath:
+            print "JARA FOlder ignoring"+filepath+"\n"
+            continue
+        #print os.path.join(root,filename)
+        print "Is fileUpdated ?"+str(updateConfig(os.path.join(root,filename)))+" : file path: "+filepath,"\n"
